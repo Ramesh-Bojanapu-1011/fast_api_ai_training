@@ -33,3 +33,12 @@ async def add_employee(playlode: Employee, db: Session = Depends(get_db)):
 @emp_rooter.get("/allemployes", response_model=list[EmployeeResponse], status_code=200)
 async def get_employee(db: Session = Depends(get_db)):
     return employee_service.get_all_employee(db=db)
+
+
+@emp_rooter.get(
+    path="/get_an_employee",
+    response_model=EmployeeResponse,
+    status_code=200,
+)
+async def get_an_employee(employee_id: int, db: Session = Depends(get_db)):
+    return employee_service.get_employee_by_id(emp_id=employee_id, db=db)

@@ -16,3 +16,7 @@ class employee_service:
     def get_all_employee(db: Session):
         employees = employee_repo.all_employees(db=db)
         return employees
+
+    @staticmethod
+    def get_employee_by_id(emp_id: int, db: Session):
+        return employee_repo.get_employee_by_id(db=db, employee_id=emp_id)
