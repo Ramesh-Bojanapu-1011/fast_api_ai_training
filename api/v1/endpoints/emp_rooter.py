@@ -42,6 +42,26 @@ async def get_an_employee(employee_id: int, db: Session = Depends(get_db)):
     return employee_service.get_employee_by_id(emp_id=employee_id, db=db)
 
 
+@emp_rooter.put(
+    path="/update_an_employee",
+    response_model=EmployeeResponse,
+    status_code=200,
+    tags=["employee"],
+)
+async def update_an_employee(
+    employee_id: int,
+    playlode: Employee,
+    db: Session = Depends(get_db),
+):
+    return employee_service.update_employee(
+        db=db,
+        employee_id=employee_id,
+        full_name=playlode.full_name,
+        designation=playlode.designation,
+        location=playlode.location,
+    )
+
+
 @emp_rooter.delete(path="/delete_an_employee", status_code=200)
 async def delete_employee(employee_id: int, db: Session = Depends(get_db)):
     emp_data = employee_service.delete_employee(db, employee_id)

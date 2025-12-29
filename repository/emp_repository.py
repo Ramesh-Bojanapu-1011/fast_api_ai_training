@@ -27,6 +27,17 @@ class employee_repo:
         return emp_data
 
     @staticmethod
+    def update_an_employee(employee_id: int, db: Session, employee: Employee):
+        emp_data = db.query(Employee).filter(Employee.emp_id == employee_id).first()
+        if not emp_data:
+            raise HTTPException(status_code=404, detail="Employee not found")
+        emp_data.full_name = employee.get("full_name", emp_data.full_name)
+        emp_data.designation = employee.get("designation", emp_data.designation)
+        emp_data.location = employee.get("location", emp_data.location)
+        db.commit()
+        return emp_data
+
+    @staticmethod
     def delete_employee(employee_id: int, db: Session):
         emp_data = db.query(Employee).filter(Employee.emp_id == employee_id).first()
         if not emp_data:

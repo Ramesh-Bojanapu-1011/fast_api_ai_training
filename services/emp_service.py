@@ -24,6 +24,19 @@ class employee_service:
         return employee_repo.get_employee_by_id(db=db, employee_id=emp_id)
 
     @staticmethod
+    def update_employee(
+        full_name, designation, location, employee_id: int, db: Session
+    ):
+        employee = {
+            "full_name": full_name,
+            "designation": designation,
+            "location": location,
+        }
+        return employee_repo.update_an_employee(
+            db=db, employee_id=employee_id, employee=employee
+        )
+
+    @staticmethod
     def delete_employee(db: Session, employee_id: int):
         emp_data = employee_repo.get_employee_by_id(db=db, employee_id=employee_id)
         if not emp_data:
