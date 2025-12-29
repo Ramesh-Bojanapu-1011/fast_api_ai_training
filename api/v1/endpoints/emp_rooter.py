@@ -46,7 +46,6 @@ async def get_an_employee(employee_id: int, db: Session = Depends(get_db)):
     path="/update_an_employee",
     response_model=EmployeeResponse,
     status_code=200,
-    tags=["employee"],
 )
 async def update_an_employee(
     employee_id: int,
