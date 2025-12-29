@@ -1,11 +1,9 @@
-from fastapi import Depends, APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-
+from core.database import session_local
 from schema.employee_schema import Employee, EmployeeResponse
 from services.emp_service import employee_service
-from core.database import session_local
-
 
 emp_rooter = APIRouter(
     prefix="/employee",
@@ -42,3 +40,11 @@ async def get_employee(db: Session = Depends(get_db)):
 )
 async def get_an_employee(employee_id: int, db: Session = Depends(get_db)):
     return employee_service.get_employee_by_id(emp_id=employee_id, db=db)
+
+
+@emp_rooter.delete(path="/delete_an_employee", status_code=200)
+async def delete_employee(employee_id: int, db: Session = Depends(get_db)):
+    emp_data = employee_service.delete_employee(db, employee_id)
+    if not emp_data:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    return {"message": "Employee deleted successfully"}

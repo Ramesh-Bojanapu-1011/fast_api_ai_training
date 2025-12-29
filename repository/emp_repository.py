@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+
 from models.employee import Employee
 
 
@@ -23,4 +24,13 @@ class employee_repo:
         emp_data = db.query(Employee).filter(Employee.emp_id == employee_id).first()
         if not emp_data:
             raise HTTPException(status_code=404, detail="Employee not found")
+        return emp_data
+
+    @staticmethod
+    def delete_employee(employee_id: int, db: Session):
+        emp_data = db.query(Employee).filter(Employee.emp_id == employee_id).first()
+        if not emp_data:
+            raise HTTPException(status_code=404, detail="Employee not found")
+        db.delete(emp_data)
+        db.commit()
         return emp_data

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from api.v1.api_router import api_router
-from core.database import engine, Base
+from core.database import Base, engine
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
