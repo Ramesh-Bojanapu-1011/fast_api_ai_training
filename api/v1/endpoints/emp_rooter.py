@@ -14,22 +14,22 @@ def get_db():
     db = session_local()
     try:
         yield db
-    except Exception as e:
-        raise e
+    except Exception as e:  # noqa: TRY203
+        raise e  # noqa: TRY201
     finally:
         db.close()
 
 
 # insert in data
 @emp_rooter.post("/add", response_model=EmployeeResponse, status_code=201)
-async def add_employee(playlode: Employee, db: Session = Depends(get_db)):
+async def add_employee(playlode: Employee, db: Session = Depends(get_db)):  # noqa: B008
     return employee_service.create_employee(
         db, playlode.full_name, playlode.designation, playlode.location
     )
 
 
 @emp_rooter.get("/allemployes", response_model=list[EmployeeResponse], status_code=200)
-async def get_employee(db: Session = Depends(get_db)):
+async def get_employee(db: Session = Depends(get_db)):  # noqa: B008
     return employee_service.get_all_employee(db=db)
 
 
@@ -38,7 +38,7 @@ async def get_employee(db: Session = Depends(get_db)):
     response_model=EmployeeResponse,
     status_code=200,
 )
-async def get_an_employee(employee_id: int, db: Session = Depends(get_db)):
+async def get_an_employee(employee_id: int, db: Session = Depends(get_db)):  # noqa: B008
     return employee_service.get_employee_by_id(emp_id=employee_id, db=db)
 
 
@@ -50,7 +50,7 @@ async def get_an_employee(employee_id: int, db: Session = Depends(get_db)):
 async def update_an_employee(
     employee_id: int,
     playlode: Employee,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     return employee_service.update_employee(
         db=db,
@@ -62,7 +62,7 @@ async def update_an_employee(
 
 
 @emp_rooter.delete(path="/delete_an_employee", status_code=200)
-async def delete_employee(employee_id: int, db: Session = Depends(get_db)):
+async def delete_employee(employee_id: int, db: Session = Depends(get_db)):  # noqa: B008
     emp_data = employee_service.delete_employee(db, employee_id)
     if not emp_data:
         raise HTTPException(status_code=404, detail="Employee not found")
